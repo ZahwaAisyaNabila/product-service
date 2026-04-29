@@ -1,47 +1,24 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ProductController;
 
-// TEST ROUTE (buat cek awal)
+// TEST
 Route::get('/test', function () {
     return response()->json([
-        "message" => "API Product Service jalan"
+        'message' => 'API Product Service ShopEase berjalan',
+        'service' => 'ProductService',
+        'port'    => '8002'
     ]);
 });
 
-// GET semua produk
-Route::get('/products', function () {
-    return response()->json([
-        [
-            "id" => 1,
-            "name" => "Laptop",
-            "price" => 10000000,
-            "stock" => 5
-        ],
-        [
-            "id" => 2,
-            "name" => "Mouse",
-            "price" => 200000,
-            "stock" => 10
-        ]
-    ]);
-});
+// PROVIDER
+Route::get('/products', [ProductController::class, 'index']);
+Route::get('/products/{id}', [ProductController::class, 'show']);
+Route::put('/products/{id}', [ProductController::class, 'update']);
+Route::delete('/products/{id}', [ProductController::class, 'destroy']);
+Route::post('/products/{id}/reduce-stock', [ProductController::class, 'reduceStock']);
 
-// GET produk by ID
-Route::get('/products/{id}', function ($id) {
-    return response()->json([
-        "id" => $id,
-        "name" => "Produk " . $id,
-        "price" => 500000,
-        "stock" => 20
-    ]);
-});
-
-// POST tambah produk
-Route::post('/products', function (Request $request) {
-    return response()->json([
-        "message" => "Produk berhasil ditambahkan",
-        "data" => $request->all()
-    ]);
-});
+// CONSUMER
+Route::post('/products', [ProductController::class, 'store']);
+Route::get('/products/{id}/with-seller', [ProductController::class, 'showWithSeller']);

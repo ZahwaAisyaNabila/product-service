@@ -1,45 +1,30 @@
 <?php
 
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
-// TEST
-Route::get('/test', function () {
-    return "Web route jalan";
+// halaman utama
+Route::get('/', function () {
+    return view('welcome');
 });
 
-// GET semua produk
+// test browser biasa
+Route::get('/test', function () {
+    return response()->json([
+        'message' => 'Web route aktif'
+    ]);
+});
+
+// halaman products biasa (opsional)
 Route::get('/products', function () {
     return response()->json([
-        [
-            "id" => 1,
-            "name" => "Laptop",
-            "price" => 10000000,
-            "stock" => 5
-        ],
-        [
-            "id" => 2,
-            "name" => "Mouse",
-            "price" => 200000,
-            "stock" => 10
-        ]
+        'message' => 'Halaman products web route'
     ]);
 });
 
-// GET produk by ID
+// detail product web biasa (opsional)
 Route::get('/products/{id}', function ($id) {
     return response()->json([
-        "id" => $id,
-        "name" => "Produk " . $id,
-        "price" => 500000,
-        "stock" => 20
-    ]);
-});
-
-// POST tambah produk
-Route::post('/products', function (Request $request) {
-    return response()->json([
-        "message" => "Produk berhasil ditambahkan",
-        "data" => $request->all()
+        'message' => 'Detail product web route',
+        'id' => $id
     ]);
 });
